@@ -1,7 +1,17 @@
 console.log("Web serverni boshlash");
 const express = require("express");
 const app = express();
-const http = require("http")
+const http = require("http");
+const fs = require("fs");
+
+let user;
+fs.readFile("database/user.json", "utf8", (err, data) => {
+    if(err) {
+        console.log("ERROR:", err)
+    }else {
+        user = JSON.parse(data)
+    }
+})
 
 // 1 expressga kirib kelayotgan malumotlarga aloqador kodlar yoziladi
 app.use(express.static("public"));  // (css html)xar qanday browserdan kirib kelayotgah=n malumotlar uchun public foldor ochiq degani
@@ -25,7 +35,9 @@ app.post("/create-item", (req, res) => {
     console.log(req.body);
     res.json({test: "success"})
 })
-
+app.get("/author", (req, res) => {
+    res.render("author", {user: user})
+})
 app.get("/", function (req, res) {
     res.render("harid")
 })
