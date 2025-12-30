@@ -334,9 +334,7 @@
     border-radius: 50%;
 }
 
-/* kvadrat */
-.square {
-}
+
 
 /* romb */
 .diamond {
@@ -344,13 +342,27 @@
 }
 
 /* ranglar */
-.yellow { border-color: #fbbc04; }
-.yellow2 { border-color: #fbbc04; }
-.green  { border-color: #00c853; }
-.green2 { border-color: #00c853; }
-.blue   { border-color: #2979ff; }
-.orange { border-color: #ff9100; }
-.red    { border-color: #ff5252; }
+.yellow { 
+    border-color: #fbbc04; 
+}
+.yellow2 { 
+    border-color: #fbbc04; 
+}
+.green  { 
+    border-color: #00c853; 
+}
+.green2 { 
+    border-color: #00c853; 
+}
+.blue   { 
+    border-color: #2979ff; 
+}
+.orange { 
+    border-color: #ff9100; 
+}
+.red    { 
+    border-color: #ff5252; 
+}
 
 /* joylashuvlar */
 .circle.yellow { 
@@ -425,15 +437,41 @@ top: 10%;
     line-height: 24px; /* 150% */
     text-transform: capitalize;
 }
-.hire_me_icon{
+.hire_me_icon {
     margin-top: 25px;
     width: 154px;
     height: 51px;
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 8px;
+    border: 1px solid rgb(160, 154, 154);
     border-radius: 5px;
-    background: var(--Yellow, #FFB400);
+    /* background: var(--Yellow, #FFB400); */
+    cursor: pointer;
+
+    /* silliq o‘tish */
+    transition: background-color 0.3s ease;
+}
+.hire_me_icon div {
+    color: #000;
+    font-weight: 600;
+}
+
+.hire_me_icon:hover div {
+    color: #fff;
+}
+
+.hire_me_icon img {
+    transition: transform 0.3s ease;
+}
+
+.hire_me_icon:hover img {
+    transform: translateX(4px); /* icon biroz siljiydi */
+}
+/* HOVER */
+.hire_me_icon:hover {
+    background-color: #e0a800; /* xohlagan rangingiz */
 }
 
 /* ending midd top frame */
@@ -656,16 +694,69 @@ top: 10%;
     height: 33px;
 }
 .right_icons_siza{
+    position: relative;
+    /* overflow: hidden; */
+    z-index: 1;
+}
+.right_icon_round {
+    position: relative; /* tooltip uchun */
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.right_icon_round:hover {
+    background: #fbbc04;
+    color: #000;
+}
+.right_icons_siza{
     margin-top: 54px;
     display: flex;
     align-items: center;
     justify-self: center;
     
 }
+.right_icons_siza {
+    display: inline-block;
+}
+.right_icons_siza:hover .right_icon_round {
+    background: #fbbc04;
+    color: #000;
+}
+
 .right_imgs{
     width: 18px;
     height: 18px;
     flex-shrink: 0;
 
+}
+.tooltip {
+    position: absolute;
+    top: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: black;
+    color: white;
+    padding: 5px 8px;
+    font-size: 12px;
+    border-radius: 5px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.2s;
+    z-index: 10;
+}
+.right_icons_siza:hover .tooltip {
+    opacity: 1;
+}
+.tooltip {
+    transform: translateX(-50%) translateY(5px);
+}
+
+.right_icons_siza:hover .tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
 }
 /* ending right frame */

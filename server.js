@@ -31,17 +31,10 @@ app.set("view engine", "ejs");   // Qaysi shablon tilidan foydalanishni aytyapmi
 // app.get("/gift", function(req, res){        
 //     res.end(`<h1 style="background: aqua">Siz sovg'alar bolimidasiz</h1>`)
 // });
-app.post("/create-item", (req, res) => {
-    console.log(req.body);
-    res.json({test: "success"})
-})
-app.get("/author", (req, res) => {
-    res.render("author", {user: user})
-})
-app.get("/", function (req, res) {
-    res.render("harid")
-})
-
+// app.post("/create-item", (req, res) => {
+//     console.log(req.body);
+//     res.json({test: "success"})
+// })
 /*
 app.get → GET so‘rovni ushlaydi
 "/" → asosiy sahifa (localhost:3000/)
@@ -49,10 +42,18 @@ req → kelgan so‘rov
 res → javob
 res.end("Hello world") → brauzerga javob yuboradi
 */
+app.get("/author", (req, res) => {
+    res.render("author", {user: user})     // view engine ejs framework orqali ejsni oqib html yasab beradi 
+})
+app.get("/", function (req, res) {
+        res.render("harid")
+    })
+    
 const server = http.createServer(app);
 let PORT = 3000;
 server.listen(PORT, function() {
     console.log(`The server is running successfully on port:${PORT}`)
 });
+console.log("Passed here 1");
 
 
