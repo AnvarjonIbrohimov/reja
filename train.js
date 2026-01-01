@@ -1,121 +1,243 @@
-console.log("Jack Ma maslaxatlari")
-const list = [
-    "1-Yaxshi talaba bo'ling",  //0-20
-    "2-Tog'ri boshliq tanlang va koproq hatolar qiling",  //20-30
-    "3-Uzingiz uchun ishlashni boshlang",  // 30-40
-    "4-Siz kuchli bolgan narsalarni qiling", // 40-50
-    "5-Yoshlarga investitsiya qiling",  // 50-60
-    "6-Endi dam oling, foydasi yoq",  // 60~
-];
+// 1- masala 
+//  async va awaitdan foydalanib 1. suv qaynatilmoqda.... 3secunddan keyin  ,   suv qaynadi ,  choyni damlang.... 3 secunddan keyin  ,  choy tayyor boldi deb consolega chiqaring
+function kutish(secund){
+    return new Promise (resolve => setTimeout(resolve,secund))
+};
+async function choyDamlash() {
+    console.log("1. Suv qaynatilmoqda...");
+    await kutish(3000);
+    console.log("2. Suv qaynadi, choyni damlang...");
 
-// CALLBACK function
-/*
-function maslaxatBering( a, callback) {
-    if (typeof a !== 'number') callback( "insert a number", null);
-    else if( a <= 20 ) callback(null, list[0]);
-    else if( a > 20 && a <= 30) callback(null, list[1]);
-    else if( a > 30 && a <= 40) callback(null, list[2]);
-    else if( a > 40 && a <= 50) callback(null, list[3]);
-    else if( a > 50 && a <= 60) callback(null, list[4]);
-    else{
-        setTimeout(function(){
-            callback(null, list[5]);
-        }, 5000)
-    };
+    await kutish(3000);
+    console.log("3. Choy tayyot boldi marhamat.");
+};
+// choyDamlash();
+//===============================================================================================
+
+// 2- masala 
+// 2 sekund => "Telefon zaryadga qo‘yildi..."
+// 3 sekund => "50% zaryad oldi..."
+// 2 sekund =>"100% bo‘ldi, zaryaddan olishingiz mumkin!!"
+function waiting(sec) {
+    return new Promise (resolve => {
+        setTimeout(resolve, sec);
+})
+};
+async function phoneCharging() {
+    console.log("Sizning telefoningiz zaryadka qoyildi...");
+    
+    await waiting(2000);
+    console.log("Telefon 50% zaryad oldi...");
+
+    await waiting(3000);
+    console.log("100% boldi, zaryaddan olishingiz mumkin!");
+};
+//===============================================================================================
+// phoneCharging();
+
+// 3- masala 
+// consolega 1.  Serverga murojaat qilindi...
+// (2 sekund kutadi)
+//  2. Ma'lumot yuklanmoqda...
+// (2 sekund kutadi)
+// 3. Ma'lumot yuklandi: { id: 1, name: 'Boburbek', status: 'active' } va songida
+// consolega  
+// console.log("Ma'lumot yuklandi: ", data);
+//   console.log(data.name, " Hush kelibsiz");
+// ko'rinishida  ishlaydigan cod 
+const data = { id: 1, name: 'Boburbek', status: 'active' }
+function waiting2 (sec2){
+    return new Promise(resolve => {
+        setTimeout(resolve, sec2)
+    })
 };
 
-console.log("Passed here 1")
-maslaxatBering(30, (err, data) => {
-    if(err) console.log("ERROR",err);
-    else{
-        console.log("Javob:", data)
-    }
-});
-console.log("Passed here 2")
-*/
+async function indormation() {
+    console.log("1. Serverga murojat qilindi...");
+    
+    await waiting2(2000);
+    console.log("Malumot yuklanmoqda...");
 
-// //   ASYNC function
-async function maslaxatBering( a) {
-    if (typeof a !== 'number') throw new Error( "insert a number");
-    else if( a <= 20 ) return list[0];
-    else if( a > 20 && a <= 30) return list[1];
-    else if( a > 30 && a <= 40) return list[2];
-    else if( a > 40 && a <= 50) return list[3];
-    else if( a > 50 && a <= 60) return list[4];
-    else {
-    return new Promise((resolve) => {
-    let time = 10;
+    await waiting2(2000);
+    console.log("Malumot yuklandi", data);
+    console.log(data.name , "Hush kelibsiz");
+};
+// indormation()
+//===============================================================================================
 
-    const interval = setInterval(() => {
-        console.log(`Kutilmoqda: ${time} sekund`);
-        time--;
 
-        if (time === 0) {
-        clearInterval(interval);
-        resolve(list[5]);
-        }
-    }, 1000);
+
+// try...catch nima?
+// 👉 try...catch – bu xatoliklarni (error) tutish va ularni boshqarish uchun ishlatiladi.
+// Normal holatda kodda xato bo‘lsa, dastur to‘xtab qoladi. Lekin try...catch ishlatilsa, biz xatoni “ushlab” olamiz va dastur davom etadi.  
+// try {
+//   let b = c + 5; //  c o'zgaruvchi e'lon qilinmagan
+//   console.log(b);
+// } catch (error) {
+//   console.log("Xatolik yuz berdi:", error.message); // bu yerda c elon qilinmagani uchun tryda xatolik yuz berdi shuning uchun catch ishladi 
+
+// } 
+// // Xatolik yuz berdi: c is not defined 
+
+
+
+
+//===============================================================================================
+//4- masala  
+// quyidagi 5 ta foydalanuvchi orasidan boburbek ismli foydalanuvvchi bor bolsa uni malumotlarini chiqarsin 
+// agar yoq bolsa foydalanuvchi malumotlari topilmadi deb chiqarsin 
+// bor holatni ham yoq holatni ham  ishlatib koring
+// async await try catchlardan foydalaning 
+// server foydalanuvchi malumotlarini 1 sekunddan keyin beradi
+
+const malumotlar = [
+    { id: 1, name: "Ali", age: 25, city: "Tashkent" },
+    { id: 2, name: "Doston", age: 30, city: "Samarkand" },
+    { id: 3, name: "Boburbek", age: 22, city: "Busan" },
+    { id: 4, name: "Laylo", age: 28, city: "Fergana" },
+    { id: 5, name: "Boburbek", age: 27, city: "Bukhara" },
+];
+console.log(malumotlar[2].name);
+function dataWaiting() {
+    return new Promise(resolve => {
+    setTimeout(() => {
+        resolve(malumotlar);
+    }, 5000);
     });
 }
 
+async function ismMalumotlari(name){
+    try{
+        const data = await dataWaiting();
+        // shu xolatda filter orniga find() methodidan xam foydalansa boladi
+        const user = data.find(usersInfo => usersInfo.name.toLowerCase() === name.toLowerCase())
+        if (!user) {
+            throw new Error ("Foydalanuvchining malumotlari topilmadi!")
+        }
+        console.log("Foydalanuvchi topildi:", `Ismi: ${user.name} Yoshi: ${user.age} Yashash manzili: ${user.city}`);
+    }catch(error){
+        console.log("Xatolik yuz berdi:", error.message);
+        
+    }
+    
 };
-async function run() {
-    let javob = await maslaxatBering(70)
-    console.log(javob)
-    javob = await maslaxatBering(20);
-    console.log(javob);
-    javob = await maslaxatBering(41);
-    console.log(javob);
-}
-run()
+// ismMalumotlari("Boburbek");
+//===============================================================================================
 
+//5- masala  Promise bilan ishlash
+// 0–9 oralig‘ida tasodifiy son chiqaring.
+// Agar u juft bo‘lsa resolve, toq bo‘lsa reject.
+// .then() va .catch() bilan natijani chiqaring. 
+// Math.floor(2.9)  // 2  → pastga yaxlitlaydi
+// Math.ceil(2.1)   // 3  → yuqoriga yaxlitlaydi
+// Math.round(2.4)  // 2
+// Math.round(2.5)  // 3
+function tasodifiySon() {
+    return new Promise((resolve, reject) => {
+    const raqam = Math.round(Math.random() * 10);
 
-// Call via then catch
-
-// maslaxatBering(34)
-//     .then((data) => {
-//         console.log("Javob:", data)
-// })
-//     .catch((err) => {
-//         console.log("Error:", err)
-// })
-// console.log("Passed here 2")
-
-// ================>  <================c
-
-
-
-
-/*
-A-TASK: 
-
-Shunday 2 parametrli function tuzing, hamda birinchi parametrdagi letterni ikkinchi parametrdagi sozdan qatnashga sonini return qilishi kerak boladi.
-MASALAN countLetter("e", "engineer") 3ni return qiladi.
-*/
-
-function countLetter(letter, word) {
-    const array = [...word.toLowerCase()]
-    const letterWord = letter.toLowerCase()
-    const result = array.filter(arr => arr === letterWord);
-
-    console.log(result.length);
-}
-console.log("Birinchi usul");
-countLetter("E", "Engineer ending element")
-
-
-function countLette2(letter, word) {
-    let word2 = word.toLowerCase()
-    let count = 0;
-
-    for (let i = 0; i < word2.length; i++) {
-    if (word2[i] === letter) {
-        count++;
+    if (raqam % 2 === 0) {
+        resolve(`Juft son chiqdi: ${raqam}`);
+    } else {
+        reject(`Toq son chiqdi: ${raqam}`);
     }
+    });
+}
+
+tasodifiySon()
+//     .then(natija => console.log(natija))
+//     .catch(error => console.log(error));
+
+//===============================================================================================
+
+// 6- masala 
+//Bizda getUser degan funksiyamiz bor.
+// Bu funksiya serverga ulanayotgandek qilib ishlaydi.
+// Agar true berilsa — foydalanuvchi ma’lumotini qaytaradi.
+// Agar false berilsa — xato (reject) qaytaradi.
+//   bu holatni async / await va try...catch orqali hal qiling
+function getUser(isSuccess) {
+    return new Promise((resolve, reject) => {
+    setTimeout(() => {
+        if (isSuccess) {
+        resolve({
+            id: 1,
+            name: "Boburbek",
+            age: 22,
+            city: "Busan"
+        });
+        } else {
+        reject("Foydalanuvchi ma'lumotlarini olishda xato");
+        }
+    }, 1000); // server 1 sekunddan keyin javob beradi
+});
+}
+
+async function foydalanuvchiOlish(isSuccess) {
+    try {
+    const user = await getUser(isSuccess);
+    console.log("Foydalanuvchi:", user);
+    } catch (error) {
+    console.log("Xatolik:", error);
+    }
+}
+foydalanuvchiOlish(false)
+
+
+//===============================================================================================
+
+// 7- masala 
+// Non tayyorlanmoqda ... 
+// 2secunddan song 
+// Tuxum qovurilmoqda ...
+// Va yana 2 secunddan keyin 
+// Nonushta tayyor marhamat, Yoqimli ishtaha 
+function kutish(kut) {
+    return new Promise(resolve => setTimeout(resolve, kut));
+}
+
+async function nonushtaTayyorlash() {
+    console.log("Non tayyorlanmoqda ...");
+
+    await kutish(2000);
+    console.log("Tuxum qovurilmoqda ...");
+
+    await kutish(2000);
+    console.log("Nonushta tayyor, marhamat! Yoqimli ishtaha!");
+}
+// nonushtaTayyorlash();
+//===============================================================================================
+
+// 8- masala  7- masalaga qoshimcha shartlar berilgan  
+// Non tayyorlanmoqda ... 
+// 2secunddan song 
+// Tuxum qovurilmoqda ...
+// Va yana 2 secunddan keyin 
+// Nonushta tayyor marhamat, Yoqimli ishtaha  
+
+// huddi shu masalaga qoshimcha shart
+//Tuxum bor bo‘lsa → “🍳 Tuxum qovurilmoqda...”  yani yuqoridagi jarayon davom etadi 
+// Tuxum tugagan bo‘lsa → “🍓 Murabbo bilan non tayyorlanmoqda...”
+// Har bosqich orasida 2 soniya kutish.
+// Yakunda: “☕️ Nonushta tayyor!”
+function kutish3(wait) {
+    return new Promise(resolve => setTimeout(resolve, wait));
+}
+
+async function tuxumPishirish(tuxumBor) {
+    console.log("Non tayyorlanmoqda...");
+    await kutish3(2000);
+
+    if (tuxumBor) {
+    console.log("Tuxum qovurilmoqda...");
+    } else {
+        console.log("Tuxum qolmaganligi uchun!");
+        
+    console.log("Murabbo bilan non tayyorlanmoqda...");
     }
 
-    console.log(count);
+    await kutish3(2000);
+    console.log("Nonushta tayyor! Yoqimli ishtaha");
 }
-console.log("Ikkinchi usul");
+// tuxumPishirish(false)
 
-countLette2("a", "Anvarjon Akanikidaligmizda")

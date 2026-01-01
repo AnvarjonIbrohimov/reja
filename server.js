@@ -46,14 +46,13 @@ app.get("/author", (req, res) => {
     res.render("author", {user: user})     // view engine ejs framework orqali ejsni oqib html yasab beradi 
 })
 app.get("/", function (req, res) {
-        res.render("harid")
+        res.render("reja")
     })
     
 const server = http.createServer(app);
 let PORT = 3000;
 server.listen(PORT, function() {
-    console.log(`The server is running successfully on port:${PORT}`)
+    console.log(`The server is running successfully on port:${PORT}, http://localhost:${PORT}`)
 });
-console.log("Passed here 1");
 
 
