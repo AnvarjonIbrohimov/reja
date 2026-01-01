@@ -49,11 +49,35 @@ req → kelgan so‘rov
 res → javob
 res.end("Hello world") → brauzerga javob yuboradi
 */
-app.get("/author", (req, res) => {
-    res.render("author", {user: user})     // view engine ejs framework orqali ejsni oqib html yasab beradi 
+// app.get("/author", (req, res) => {
+//     res.render("author", {user: user})     // view engine ejs framework orqali ejsni oqib html yasab beradi 
+// })
+app.post("/create-item", (req, res) => {
+    console.log('user entered /create-item');
+
+    const new_reja = req.body.reja
+    db.collection("plans").insertOne({reja: new_reja}, (err, data) =>{
+        if(err){
+            console.log(err);
+            res.end('something wnet wrong')
+        }else{
+            res.end('successfully added')
+        }
+    })
 })
+
 app.get("/", function (req, res) {
-        res.render("reja")
+    console.log('user entered /');
+    
+    db.collection("plans").find().toArray((err, data) =>{
+        if(err){
+            console.log(err);
+            res.end("something went wrong")
+        }else{
+            res.render("reja", {items: data})
+        }
+    });
+        // res.render("reja")
     })
     
 module.exports = app;

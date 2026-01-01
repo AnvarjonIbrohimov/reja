@@ -4,9 +4,12 @@ const mongodb = require("mongodb");
 let db;
 const connectionString = "mongodb+srv://201946044_db_user:UZr1sMbZQevfJXh4@cluster0.4lrlkyg.mongodb.net/Reja?appName=Cluster0";
 
+
+// mongoose.connect() ==> MongoDB bazaga ulanish uchun ishlatiladi.
+
 mongodb.connect(connectionString, {
-    useNewUrlParser: true, 
-    useUnifiedTopology: true
+    useNewUrlParser: true,      // URL ni yangi parser bilan o‘qiydi
+    useUnifiedTopology: true        // MongoDB bilan barqaror ulanishni ta’minlaydi
 }, (err, client) => {
     if(err) console.log("ERROR on connection MongoDB");
     else {
