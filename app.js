@@ -1,15 +1,19 @@
 console.log("Web serverni boshlash!!");
+const { log } = require("console");
 const express = require("express");
 const app = express();
 // const res = require("express/lab/response");
 // const http = require("http");
 const fs = require("fs");
+const { json } = require("stream/consumers");
 
 // MongoDB connect 
 const db = require("./server").db();
 // console.log("db======> ", db);
 
-// Bu bizga author loyihani chaqirish uchun kerak boladi 
+
+/*
+// Bu bizga database ichidagi user.json fileni oqish uchun kerak boladi. 
 let user;
 fs.readFile("database/user.json", "utf8", (err, data) => {
     if(err) {
@@ -18,7 +22,7 @@ fs.readFile("database/user.json", "utf8", (err, data) => {
         user = JSON.parse(data)
     }    
 });    
-
+*/
 
 // 1 expressga kirib kelayotgan malumotlarga aloqador kodlar yoziladi
 app.use(express.static("public"));  // (css html)xar qanday browserdan kirib kelayotgah=n malumotlar uchun public foldor ochiq degani
@@ -57,27 +61,22 @@ app.post("/create-item", (req, res) => {
 
     const new_reja = req.body.reja
     db.collection("plans").insertOne({reja: new_reja}, (err, data) =>{
-        if(err){
-            console.log(err);
-            res.end('something wnet wrong')
-        }else{
-            res.end('successfully added')
-        }
+        console.log(data.ops);   // osha datani terminalda korib turish uhcun
+        res.json(data.ops[0]);   // fronenddan db ga json shaklida malumotlarni jonatyabdi
     })
 })
 
 app.get("/", function (req, res) {
     console.log('user entered /');
     
-    db.collection("plans").find().toArray((err, data) =>{
+    db.collection("plans").find().toArray((err, ddata) =>{
         if(err){
             console.log(err);
             res.end("something went wrong")
         }else{
-            res.render("reja", {items: data})
+            res.render("reja", {bizningitems: ddata})
         }
     });
-        // res.render("reja")
     })
     
 module.exports = app;
