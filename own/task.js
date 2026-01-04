@@ -25,7 +25,6 @@ console.log("npm run train");
 
 /*
 A-TASK: 
-
 Shunday 2 parametrli function tuzing, hamda birinchi parametrdagi letterni ikkinchi parametrdagi sozdan qatnashga sonini return qilishi kerak boladi.
 MASALAN countLetter("e", "engineer") 3ni return qiladi.
 */
