@@ -1,12 +1,22 @@
+
 /*
-vC-TASK
+C-TASK
 
 Shunday function tuzing, u 2ta string parametr ega bolsin, 
-hamda agar har ikkala string bir hil harflardan iborat bolsa true aks holda false qaytarsin. 
-MASALAN checkContent("mitgroup", "gmtiprou") return qiladi true.
-
-@MITASK
+hamda agar har ikkala string bir hil harflardan iborat bolsa true 
+aks holda false qaytarsin. MASALAN checkContent("mitgroup", "gmtiprou")
+return qiladi true.
 */
+function checkContent(a, b){
+    let c = [...a.toLowerCase()].sort().join("") // sartarofka qilib uni arraydan xam stringdan xam ochib shunchaki text holatiga keltiradu
+    let d = [...b.toLowerCase()].sort().join("") // sartarofka qilib uni arraydan xam stringdan xam ochib shunchaki text holatiga keltiradu
+    console.log(c===d);
+}
+checkContent("mitgrOup", "Gmtiprou")
+checkContent("Anvarjon", "nojranva")
+checkContent("54551002433", "01023435554")
+
+
 
 // B -TASK: 
 //Shunday function tuzing, u 1ta string parametrga ega bolsin, 
@@ -52,7 +62,6 @@ function countLette2(letter, word) {
     console.log(count);
 }
 console.log("Ikkinchi usul");
-
 countLette2("a", "Anvarjon Akanikidaligmizda")
 
 

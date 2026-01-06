@@ -15,6 +15,7 @@
     <!-- SHU YERDAN YOZASIZ -->
         <div class="container">
         <h1 class="display-4 text-center py-1">Reja va Maqsadlar</h1>
+        <button style="background-color: aqua; border-radius: 50px;">Bu event bolmagandagi holati</button>
         <div class="jumbotrom p-3 shadow-sm" >
 
           <form id="create-form" action="/create-item" method="POST" >
@@ -46,12 +47,12 @@
                     
                     <div>
                         <button 
-                        data_id="<%= item._id%>" 
+                        data-id="<%= item._id%>" 
                           class="edit-me btn btn-secondary btn-sm mr-1">
-                            Ozgartirish
+                            EDIT
                         </button>
                         <button data-id="<%= item._id%>" 
-                          class="delete-me btn btn-danger btn-sm">Ochirish</button>
+                          class="delete-me btn btn-danger btn-sm">DELETE</button>
                     </div>
                   </li>
           <% }) %>

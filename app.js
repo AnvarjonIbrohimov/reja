@@ -57,25 +57,67 @@ res.end("Hello world") → brauzerga javob yuboradi
 // app.get("/author", (req, res) => {
 //     res.render("author", {user: user})     // view engine ejs framework orqali ejsni oqib html yasab beradi 
 // })
+
+// Bu inputga data kirganda uni qabul qilib inputni yangilab inputda focus qolishi uchun
 app.post("/create-item", (req, res) => {
     console.log('user entered /create-item');
 
     const new_reja = req.body.reja
     db.collection("plans").insertOne({reja: new_reja}, (err, data) =>{
-        console.log(data.ops);   // osha datani terminalda korib turish uhcun
-        res.json(data.ops[0]);   // fronenddan db ga json shaklida malumotlarni jonatyabdi
+        console.log(data.ops);   // data.ops[0] => MongoDB ga hozirgina qo‘shilgan yangi hujjatning o‘zi
+        res.json(data.ops[0]);   // Yangi qo‘shilgan itemni frontendga qaytaradi
     })
 });
 
+// bu yerda biz DELETE ga tegishli API yasab oldik
 app.post("/delete-item", (req, res) =>{
     const id = req.body.id
-    const reja = req.body.reja
-    db.collection("plans").deleteOne({_id: new mongodb.ObjectId(id)}, function(err,data){
+    db.collection("plans").deleteOne(
+        {_id: new mongodb.ObjectId(id)}, 
+    function(err,data){
         res.json({state: "success"})
     })
-    console.log("Shu item delete boldi", reja);
     
-})
+});
+
+// malumotlarni edit qilish uchun yasalyatgan API
+app.post("/edit-item", async (req, res) => {  //2 
+    console.log("REQ.BIDY", req.body);
+    
+    try {
+    await db.collection("plans").updateOne( //3 
+        { _id: new mongodb.ObjectId(req.body.id) },
+        { $set: { reja: req.body.new_input } }
+    );
+
+    res.json({ state: "Success" }); // 4
+    } catch (err) {
+    res.status(500).json({ state: "error" });
+    }
+});
+
+app.post("/edit-item", (req, res) => {
+    const data = req.body;
+    console.log(data);
+    db.collection("plans")
+    .findOneAndUpdate(
+        {_id: new mongodb.ObjectId(data.id)}, 
+        {$set: {reja: data.new_input}},
+    function (err, data) {
+        res.json({ state: "success "});
+    })
+});
+
+
+// hamma malumotlarni ALL_DELETE qilish uchun yasalgan API
+app.post("/delete-all", (req, res) => {
+    if(req.body.delete_all) {
+        db.collection("plans").deleteMany(function() {
+            res.json({state: "Hamma rejalar o'chirildi"}); // frontendga javob qaytaryabdi
+        });
+    };
+});
+
 
 app.get("/", function (req, res) {
     console.log('user entered /');

@@ -1,19 +1,60 @@
-
 /*
-C-TASK
+D-TASK
 
-Shunday function tuzing, u 2ta string parametr ega bolsin, 
-hamda agar har ikkala string bir hil harflardan iborat bolsa true 
-aks holda false qaytarsin. MASALAN checkContent("mitgroup", "gmtiprou")
-return qiladi true.
+Shunday class tuzing tuzing nomi Shop, 
+va uni constructoriga 3 hil mahsulot pass bolsin, 
+hamda classning 3ta methodi bolsin, biri qoldiq, 
+biri sotish va biri qabul. Har bir method ishga tushgan vaqt ham log qilinsin. 
+MASALAN: const shop = new Shop(4, 5, 2); shop.qoldiq() 
+return hozir 20:40da 4ta non, 5ta lagmon va 2ta cola mavjud! 
+shop.sotish('non', 3) & shop.qabul('cola', 4) & shop.qoldiq() 
+return hozir 20:50da 1ta non, 5ta lagmon va 6ta cola mavjud!
 */
-function checkContent(a, b){
-    let c = [...a.toLowerCase()].sort().join("")
-    let d = [...b.toLowerCase()].sort().join("")
-    console.log(c===d);
-    
-    
-}
-checkContent("mitgrOup", "Gmtiprou")
-checkContent("Anvarjon", "nojranva")
-checkContent("54551002433", "01023435554")
+const moment = require("moment")
+// const nowTime =  moment().format('MMMM Do YYYY, h:mm:ss a')
+const nowTime =  moment().format('h:mm:ss')
+
+class Shop {
+    constructor(non, lagmon, cola){
+        this.non = non;
+        this.lagmon = lagmon;
+        this.cola = cola;
+    }
+    qoldiq(){
+        return `Hozirda soat ${nowTime} ${this.non}ta non, ${this.lagmon}ta lagmon, ${this.cola}ta cola mavjud`
+    }
+    sotish(product, sell){
+        if(product === "non"  && sell <= this.non){
+            this.non -= sell
+        }else if (product === "lagmon" && sell <= this.lagmon){
+            this.lagmon -= sell
+        }else if(product === "cola" && sell <= this.cola){
+            this.cola -= sell
+        }else{
+            console.log(`Siz kiritgan ${product} miqdori hozir mavjud emas`);
+            console.log("Iltimos qoldiqqa qarab maxsulot tanlang");
+        }
+    }
+    olish(product, buy){
+        if(product === "non" && buy <= 15){
+        this.non += buy
+        }else if (product === "lagmon" && buy <= 20){
+            this.lagmon += buy
+        }else if(product === "cola" && buy <= 100){
+            this.cola += buy
+        }else{
+            console.log(`Uzur buncha kop ${product} qabul qila olmaymiz`);
+            console.log("Maxsulotni saqlash muddatiga etibor qaratishimiz xam kerak!");
+            
+        }
+}};
+
+
+const shop = new Shop(4, 5, 2);
+shop.olish("cola", 101)
+console.log(shop.qoldiq());
+shop.sotish("non", 3);
+console.log(shop.qoldiq());
+
+
+
