@@ -15,7 +15,6 @@
     <!-- SHU YERDAN YOZASIZ -->
         <div class="container">
         <h1 class="display-4 text-center py-1">Reja va Maqsadlar</h1>
-        <button style="background-color: aqua; border-radius: 50px;">Bu event bolmagandagi holati</button>
         <div class="jumbotrom p-3 shadow-sm" >
 
           <form id="create-form" action="/create-item" method="POST" >
@@ -41,9 +40,9 @@
         <ul id="item-list" class="list-group pb-5">
           <% bizningitems.map(function(item){ %>
             <li
-                    class="list-group-item list-group-item-info d-flex align-items-center justify-content-between"
+                    class="list-group-item item list-group-item-info d-flex align-items-center justify-content-between"
                 >
-                    <span data-id="<%= item._id%>" class="item-text"><%=item.reja%></span>
+                  <span data-id="<%= item._id%>" class="item-text"><%=item.reja%></span>
                     
                     <div>
                         <button 
@@ -58,7 +57,7 @@
           <% }) %>
                 
               </ul>
-        <button id="clean-all" class="btn btn-danger" style="border-radius: 20px;">
+        <button id="clean-all" class="btn btn-danger"  style="display: none;">
           Hamma Rejalarni O'chirish
         </button>
     </div>

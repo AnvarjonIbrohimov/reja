@@ -2,25 +2,38 @@ console.log("FrontEnd JS ishga tushdi!");
 
 function itemTmeplate(item){
     return `
-    <li style="background-color: aqua; border-radius: 50px;"
-        class="list-group-item list-group-item-info d-flex align-items-center justify-content-between"
+    <li class="list-group-item item list-group-item-info d-flex align-items-center justify-content-between"
+    data-id="${item._id}"  
     >
-        <span data_id="<%= item._id%>" class="item-text">${item.reja}</span>
+            <span data_id="<%= item._id%>" class="item-text">${item.reja}</span>
         
         <div>
             <button 
             data_id=${item._id} 
             class="edit-me btn btn-secondary btn-sm mr-1">
-            Ozgartirish
+            EDIT
             </button>
             <button 
             data_id=${item._id} 
-            class="delete-me btn btn-danger btn-sm">Ochirish
+            class="delete-me btn btn-danger btn-sm"> DELETE
             </button>
         </div>
 
     </li>`
 };
+// Bu bizga 2tadan kam data bolsa All_Delete button kotinmaydi
+function cleanAllButton() {
+    const items = document.querySelectorAll(".item");
+
+    const cleanAllBtn = document.getElementById("clean-all");
+
+    if (items.length > 1) {
+        cleanAllBtn.style.display = "block";
+    } else {
+        cleanAllBtn.style.display = "none";
+    }
+}
+
 
 let createField = document.getElementById("create-field");
 
@@ -29,12 +42,16 @@ document.getElementById("create-form").addEventListener("submit", function(e) {
 
     //Bu inputga data kirganda uni qabul qilib inputni yangilab inputda focus qolishi uchun
     axios
-    .post("/create-item", {reja: createField.value})  // createField.value => foydalanuvchi yozgan matn
+    .post("/create-item", {
+        reja: createField.value[0].toUpperCase() + createField.value.slice(1) 
+    }) // createField.value => foydalanuvchi yozgan matn
     .then((tagData) => {
         document.getElementById("item-list")
         .insertAdjacentHTML("beforeend", itemTmeplate(tagData.data));
         createField.value = "";
         createField.focus();
+
+        cleanAllButton(); // MUHIM tepada yasagan function buttonni korinmaydigan qiladigan
     })
     .catch((err) => {
         console.log("Iltimos qaytadan urinib koring!");
@@ -53,6 +70,8 @@ document.addEventListener("click", function(e) {
             .then((response) => {
                 console.log(response.data);
                 e.target.parentElement.parentElement.remove();
+
+                cleanAllButton(); // MUHIM tepada yasagan function
                 
             })
             .catch((err) => {
@@ -87,19 +106,30 @@ document.addEventListener("click", function(e) {
 // hamma malumotlarni ALL_DELETE qilish uchun yasalgan API
 // Bu hammasini ochirirsam boladi deb soraydi
 
-document.getElementById("clean-all").addEventListener("click",function () {
-    if(confirm("Aniq ochirmoqchimisiz?")){
-        axios.post("/delete-all", {delete_all: true})  // frontend sorov yuboryabdi
-        .then((response) =>{    // backenddan javob olyabdi va ohirgi vazifani bajaryabdi
-            alert(response.data.state);
-            document.location.reload()
+document.getElementById("clean-all").addEventListener("click", function () {
 
-        })
-    }else{
-        alert("Sizning malumotlaringiz saqlab qolindi!");
-        
-    }
+    const items = document.querySelectorAll(".item");
+
+    if (items.length <= 1) return;
+
+    const listText = Array.from(items)
+        .map(item => item.querySelector(".item-text").innerText)
+        .join("\n- ");
+
+    const isOk = confirm(
+        "Quyidagi ma’lumotlar o‘chiriladi:\n\n- " +
+        listText +
+        "\n\nDavom etamizmi?"
+    );
+
+    if (!isOk) return;
+
+    axios.post("/delete-all", { delete_all: true })
+        .then(() => {
+            document.location.reload();
+        });
 });
+
 
 // bu shunchaki soramasdan xammasini ochirib tashlanadi
 
@@ -116,3 +146,4 @@ document.getElementById("clean-all").addEventListener("click",function () {
 //     console.log("Sahifada bosildi!");
     
 // });
+document.addEventListener("DOMContentLoaded", cleanAllButton); // shunda ekran yangilanda button korinib turadi
