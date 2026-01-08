@@ -1,8 +1,6 @@
 const http = require("http");
 const mongodb = require("mongodb");
 
-let db;
-
 const connectionString = 
     "mongodb+srv://201946044_db_user:UZr1sMbZQevfJXh4@cluster0.4lrlkyg.mongodb.net/Reja?appName=Cluster0";
 
@@ -25,6 +23,7 @@ mongodb.connect(connectionString, {
         });
     }
 });
+
 
 
 

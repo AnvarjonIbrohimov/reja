@@ -5,6 +5,7 @@ function itemTmeplate(item){
     <li class="list-group-item item list-group-item-info d-flex align-items-center justify-content-between"
     data-id="${item._id}"  
     >
+    
             <span data_id="<%= item._id%>" class="item-text">${item.reja}</span>
         
         <div>
@@ -43,7 +44,7 @@ document.getElementById("create-form").addEventListener("submit", function(e) {
     //Bu inputga data kirganda uni qabul qilib inputni yangilab inputda focus qolishi uchun
     axios
     .post("/create-item", {
-        reja: createField.value[0].toUpperCase() + createField.value.slice(1) 
+        reja: createField.value[0].toUpperCase() + createField.value.slice(1) // agar slice() qoyilmasa "Ssalom"
     }) // createField.value => foydalanuvchi yozgan matn
     .then((tagData) => {
         document.getElementById("item-list")
@@ -61,13 +62,16 @@ document.getElementById("create-form").addEventListener("submit", function(e) {
 
 // bu yerda biz DELETE ga tegishli API yasab oldik
 document.addEventListener("click", function(e) {
-    // console.log(e.target);
-    
     if(e.target.classList.contains("delete-me")){
+        console.log('Kutyabman.......');
+        
         if(confirm("Aniq ochirmoqchimisan?")){
+            console.log("STEP1: BS > FR");
             axios   // Server bilan ma’lumot almashish uchun kutubxona axios → express → DB
             .post("/delete-item", {id: e.target.getAttribute("data-id")})
             .then((response) => {
+                console.log("STEP 6: Nimadur qilish");
+                
                 console.log(response.data);
                 e.target.parentElement.parentElement.remove();
 
@@ -85,11 +89,12 @@ document.addEventListener("click", function(e) {
     if(e.target.classList.contains("edit-me")){    // contains()class bor yoqligini tekshiradi
         let userInput = prompt("O'zgartirish kiriting",
             e.target.parentElement.parentElement.querySelector(".item-text")
+            // reja: createField.value[0].toUpperCase() + createField.value.slice(1)
             .innerHTML);
         if(userInput) {
             axios.post("/edit-item",{  //1
                 id: e.target.getAttribute("data-id"), 
-                new_input: userInput,
+                new_input: userInput.toUpperCase(),
             })
             .then(() => { //5 
                 // console.log(response.data);
@@ -142,8 +147,8 @@ document.getElementById("clean-all").addEventListener("click", function () {
 //     });
 
 // document.addEventListener bizga nimaga kerak?
-// document.addEventListener("click", function () {
-//     console.log("Sahifada bosildi!");
+document.addEventListener("click", function () {
+    console.log("Sahifada bosildi!");
     
-// });
+});
 document.addEventListener("DOMContentLoaded", cleanAllButton); // shunda ekran yangilanda button korinib turadi

@@ -71,11 +71,15 @@ app.post("/create-item", (req, res) => {
 
 // bu yerda biz DELETE ga tegishli API yasab oldik
 app.post("/delete-item", (req, res) =>{
+    console.log("STEP2: FR > BS");
     const id = req.body.id
+    console.log("STEP3: BS > DB");
     db.collection("plans").deleteOne(
         {_id: new mongodb.ObjectId(id)}, 
-    function(err,data){
+        function(err,data){
+        console.log("STEP4: DB > BS");
         res.json({state: "success"})
+        console.log("STEP5: BS > FR");
     })
     
 });
@@ -86,27 +90,31 @@ app.post("/edit-item", async (req, res) => {  //2
     
     try {
     await db.collection("plans").updateOne( //3 
+        
         { _id: new mongodb.ObjectId(req.body.id) },
-        { $set: { reja: req.body.new_input } }
+        { $set: { reja: req.body.new_input }}
+        
+        
+        
     );
-
+    
     res.json({ state: "Success" }); // 4
     } catch (err) {
     res.status(500).json({ state: "error" });
     }
 });
 
-app.post("/edit-item", (req, res) => {
-    const data = req.body;
-    console.log(data);
-    db.collection("plans")
-    .findOneAndUpdate(
-        {_id: new mongodb.ObjectId(data.id)}, 
-        {$set: {reja: data.new_input}},
-    function (err, data) {
-        res.json({ state: "success "});
-    })
-});
+// app.post("/edit-item", (req, res) => {
+//     const data = req.body;
+//     console.log(data);
+//     db.collection("plans")
+//     .findOneAndUpdate(
+//         {_id: new mongodb.ObjectId(data.id)}, 
+//         {$set: {reja: data.new_input}},
+//     function (err, data) {
+//         res.json({ state: "success "});
+//     })
+// });
 
 
 // hamma malumotlarni ALL_DELETE qilish uchun yasalgan API
@@ -122,12 +130,12 @@ app.post("/delete-all", (req, res) => {
 app.get("/", function (req, res) {
     console.log('user entered /');
     
-    db.collection("plans").find().toArray((err, ddata) =>{
+    db.collection("plans").find().toArray((err, data) =>{
         if(err){
             console.log(err);
             res.end("something went wrong")
         }else{
-            res.render("reja", {bizningitems: ddata})
+            res.render("reja", {bizningitems: data})
         }
     });
     })
